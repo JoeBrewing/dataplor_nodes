@@ -30,8 +30,14 @@ namespace :seed_dataplor_node_data do
       # Go to the next row if the current row is the header.
       next if row_hash[:node_id] == 'id'
 
-      # Create a new `Node` record using the row hash.
-      Node.create!(row_hash)
+      # We create our new node like this so we can manually assign the id. Our
+      # ltree hierarchy will not work later if we do not manually assign the id.
+      node = Node.new(parent_id: row_hash[:parent_id]) do |n|
+        n.id = row_hash[:node_id]
+      end
+      
+      # Save the record.
+      node.save!
     end
   end
 end
