@@ -15,8 +15,8 @@ class Node < ApplicationRecord
     # Find the lowest common ancestor and return it.
     outer.each do |outer_node|
       inner.each do |inner_node|
-        if outer == inner
-          return outer
+        if outer_node == inner_node
+          return outer_node
         end
       end
     end
