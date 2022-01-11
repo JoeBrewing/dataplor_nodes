@@ -57,4 +57,23 @@ class Node < ApplicationRecord
   def self.root(processor)
     processor.get_root
   end
+
+  # This method gets all of the `Bird` ids of the records related to the passed
+  # node ids.
+  def self.related_birds(nodes)
+    # Initializes this as an empty array of birds.
+    birds = []
+
+    # Loop through each node.
+    nodes.each do |node|
+      # Skip this record if the relationship is empty.
+      next if node.birds.blank?
+
+      # Add the bird ids to the related_birds array.
+      birds << node.birds.pluck[:id]
+    end
+
+    # Return the array of related birds.
+    birds
+  end
 end
