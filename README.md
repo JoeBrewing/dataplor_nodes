@@ -7,7 +7,7 @@ ALTER ROLE dataplor_nodes CREATEDB;\
 CREATE EXTENSION IF NOT EXISTS ltree;
 
 # RAILS
-git clone https://github.com/JoeBrewing/dataplor_nodes/\
+git clone https://github.com/JoeBrewing/dataplor_nodes/ \
 rake db:migrate\
 rake seed_dataplor_node_data:seed\
 rake seed_dataplor_node_data:seed_paths
