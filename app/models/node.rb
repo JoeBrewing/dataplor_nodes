@@ -1,4 +1,6 @@
 class Node < ApplicationRecord
+  has_many :birds, primary_key: :node_id
+  
   # I do not typically like to have a method perform two functions like this,
   # but it seemed like the most efficient way to get both values. Would spend
   # more time on this part if I had more time.

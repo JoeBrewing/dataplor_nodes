@@ -10,11 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_10_222520) do
+ActiveRecord::Schema.define(version: 2022_01_11_203126) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
   enable_extension "plpgsql"
+
+  create_table "birds", force: :cascade do |t|
+    t.integer "node_id"
+  end
 
   create_table "nodes", force: :cascade do |t|
     t.integer "node_id"
