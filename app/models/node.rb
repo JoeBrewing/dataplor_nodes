@@ -62,6 +62,36 @@ class Node < ApplicationRecord
   def self.split_path(path)
     path.split('.')
   end
+
+  def self.set_node_paths(nodes)
+    not_added = []
+
+    count = nodes.count
+
+    nodes.each do |node|
+      # Skip this record. If the parent id is blank then it is a root node and
+      # the path has already been added.
+      if node.parent_id.blank?
+        next
+      end
+      
+      parent = Node.where(node_id: node.parent_id).first
+      
+      if parent.path.blank?
+        not_added << node
+
+        next
+      end
+
+      node.update(path: "#{parent.path}.#{node.node_id}")
+    end
+
+    if not_added.blank? || not_added.count == count
+      return
+    end
+
+    set_node_paths(not_added)
+  end
   
   # This method extracts the root from the node path.
   def root

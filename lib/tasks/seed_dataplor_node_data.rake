@@ -30,13 +30,9 @@ namespace :seed_dataplor_node_data do
       # Go to the next row if the current row is the header.
       next if row_hash[:node_id] == 'id'
 
-      # Get the parent if there is one.
-      parent = Node.where(node_id: row_hash[:parent_id]).first
-
-      # Get the path to the node. If the parent was not found then it will just
-      # be the node id. If the parent was found then the path will be the parent
-      # path plus the node id.
-      path = parent.blank? ? row_hash[:node_id] : "#{parent.path}.#{row_hash[:node_id]}"
+      # We want to get the path if it the `parent_id` value is 'nil' because that
+      # means this is a root node and we need to set the path.
+      path = row_hash[:parent_id].blank? ? row_hash[:node_id] : nil
       
       # Create our new node record.
       Node.create!(
@@ -45,5 +41,9 @@ namespace :seed_dataplor_node_data do
         path: path
       )
     end
+  end
+
+  task seed_paths: :environment do
+    Node.set_node_paths(Node.all.to_a)
   end
 end
