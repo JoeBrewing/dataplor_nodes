@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :nodes do
     collection do
       get :common_ancestor
+      get :birds
     end
   end
 end

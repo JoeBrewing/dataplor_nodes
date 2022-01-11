@@ -20,4 +20,18 @@ class NodesController < ApplicationController
     # Render lowest, root, and depth as json.
     render json: { lowest: lowest, root: root, depth: depth }.to_json
   end
+
+  def birds
+    # Gets the nodes as a string from the params.
+    nodes_as_string = params[:nodes]
+    
+    # Split the nodes into an array.
+    nodes = nodes_as_string.split(',')
+
+    # Get related birds.
+    birds = Node.related_birds(nodes)
+
+    # Render the birds array as json.
+    render json: { birds: birds }
+  end
 end

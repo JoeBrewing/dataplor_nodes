@@ -65,7 +65,9 @@ class Node < ApplicationRecord
     birds = []
 
     # Loop through each node.
-    nodes.each do |node|
+    nodes.each do |node_id|
+      node = Node.where(node_id: node_id).first
+      
       # Skip this record if the relationship is empty.
       next if node.birds.blank?
 
