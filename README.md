@@ -1,4 +1,6 @@
 # Setup
+*** It's on the master branch *** \
+ruby version 2.5.5
 
 # DB
 (I know I could have done these with a migration but I didn't want to take any longer with this than I already have)\
