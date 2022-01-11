@@ -1,28 +1,31 @@
 class Node < ApplicationRecord
+  # I do not typically like to have a method perform two functions like this,
+  # but it seemed like the most efficient way to get both values. Would spend
+  # more time on this part if I had more time.
   # This method finds the lowest common ancestor of the two passed node ids.
-  def self.lowest_common_ancestor(a, b)
+  def self.lowest_common_ancestor_and_depth(a, b)
     # Get the two paths.
     node_a_path, node_b_path = get_node_paths(a, b)
 
     # Return earlier if either of the paths are blank.
     if node_a_path.blank? || node_b_path.blank?
-      return 'One of the two nodes was not found.'
+      return nil
     end
 
     # Get the paths as an array.
     outer, inner = path_as_array(node_a_path, node_b_path)
 
-    # Find the lowest common ancestor and return it.
-    outer.each do |outer_node|
+    # Find the lowest common ancestor, the depth, and return them
+    outer.each_with_index do |outer_node, i|
       inner.each do |inner_node|
         if outer_node == inner_node
-          return outer_node
+          return outer_node, i + 1
         end
       end
     end
 
     # Return 'nil' if no common ancestor was found.
-    return nil
+    return nil, nil
   end
 
   # This method gets the path to both nodes.
@@ -108,10 +111,26 @@ class Node < ApplicationRecord
   end
   
   # This method extracts the root from the node path.
-  def root
-    # Use the node_id if the path contains a '.' otherwise use the number in
-    # front of the first '.' Alternatively this could check to see if parent_id
-    # is blank instead of seeing if the path contains a '.'
-    path.index('.') ? path[0, path.index('.')] : node_id
+  def self.root(a,b)
+    # Get node a.
+    node_a = Node.where(node_id: a).first
+
+    # Get node b.
+    node_b = Node.where(node_id: b).first
+
+    # Get the path for node a as an array.
+    path_a = split_path(node_a.path)
+
+    # Get the path for node b as an array.
+    path_b = split_path(node_b.path)
+
+    # Return the first element in the array if the root element in both arrays
+    # match.
+    if path_a[0] == path_b[0]
+      return path_a[0]
+    end
+
+    # Return nil to indicate that no root was found.
+    nil
   end
 end
